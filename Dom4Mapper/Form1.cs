@@ -10,8 +10,13 @@ using System.Windows.Forms;
 
 namespace MapNumbering
 {
+  // TODO: store source image, then make a sopy and add province numbers dynamically when necessary. Perhaps observable collection of provinces as a member and then draw them as they change?
+  // This will help when changing the font and font size
+  // - Prompt to save
+  // - Fix window aspect when opening a file
   public partial class Form1 : Form
   {
+    Paloma.TargaImage MyTargaImage;
     private Bitmap MyImage;
     private string MyImageFilename;
     public Form1()
@@ -19,14 +24,33 @@ namespace MapNumbering
       InitializeComponent();
     }
 
+    ~Form1()
+    {
+      setImage("");
+    }
+
+    private void setImage(string imagePath)
+    {
+      if (MyImage != null)
+      {
+        MyTargaImage.Dispose();
+        MyImage.Dispose();
+      }
+
+      if (System.IO.File.Exists(imagePath))
+      {
+        MyTargaImage = new Paloma.TargaImage(MyImageFilename);
+        MyImage = MyTargaImage.Image;
+      }
+    }
+
     private void fileOpenButton_Click(object sender, EventArgs e)
     {
       if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
       {
         MyImageFilename = openFileDialog1.FileName;
-        // TODO: Dispose the tgaImage and MyImage
-        Paloma.TargaImage tgaImage = new Paloma.TargaImage(MyImageFilename);
-        MyImage = tgaImage.Image;
+
+        setImage(MyImageFilename);
 
         cancelButton.Enabled = false;
         backgroundWorker1.RunWorkerAsync();
@@ -41,16 +65,6 @@ namespace MapNumbering
         System.IO.Path.GetExtension(MyImageFilename);
 
       MyImage.Save(outFile);
-    }
-
-    public void ShowMyImage(String fileToDisplay, int xSize, int ySize)
-    {
-      // Sets up an image object to be displayed.
-      if (MyImage != null)
-      {
-        MyImage.Dispose();
-      }
-      MyImage = new Bitmap(fileToDisplay);
     }
 
     bool RectIncludeNeighboringPoint(ref Rectangle r, Point p)
@@ -91,7 +105,6 @@ namespace MapNumbering
 
     private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
     {
-
       List<Rectangle> provs = new List<Rectangle>();
       // parse image for regions
       for (int y = MyImage.Height - 1; y >= 0; y--)
@@ -122,7 +135,7 @@ namespace MapNumbering
             }
           }
         }
-        (sender as BackgroundWorker).ReportProgress((y * 100) / MyImage.Height);
+        (sender as BackgroundWorker).ReportProgress(((MyImage.Height-y) * 100) / MyImage.Height);
       }
 
       // render the region numbers
@@ -130,7 +143,7 @@ namespace MapNumbering
       using (var graphics = Graphics.FromImage(MyImage))
       {
         Brush b = new SolidBrush(Color.Black);
-        Font f = new Font("Arial", 140, FontStyle.Bold);
+        Font f = new Font("Arial", 50, FontStyle.Bold);
         foreach (Rectangle r in provs)
         {
           var sz = graphics.MeasureString(num.ToString(), f, 10000);
