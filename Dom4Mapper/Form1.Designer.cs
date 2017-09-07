@@ -36,11 +36,12 @@
       this.fileOpenButton = new System.Windows.Forms.ToolStripButton();
       this.fileSaveButton = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+      this.fontButton = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
       this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
       this.cancelButton = new System.Windows.Forms.ToolStripButton();
-      this.fontButton = new System.Windows.Forms.ToolStripButton();
       this.fontDialog1 = new System.Windows.Forms.FontDialog();
+      this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.toolStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -91,7 +92,7 @@
       this.fileOpenButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.fileOpenButton.Name = "fileOpenButton";
       this.fileOpenButton.Size = new System.Drawing.Size(23, 22);
-      this.fileOpenButton.Text = "toolStripButton1";
+      this.fileOpenButton.Text = "Open";
       this.fileOpenButton.Click += new System.EventHandler(this.fileOpenButton_Click);
       // 
       // fileSaveButton
@@ -102,13 +103,23 @@
       this.fileSaveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.fileSaveButton.Name = "fileSaveButton";
       this.fileSaveButton.Size = new System.Drawing.Size(23, 22);
-      this.fileSaveButton.Text = "toolStripButton2";
+      this.fileSaveButton.Text = "Save";
       this.fileSaveButton.Click += new System.EventHandler(this.fileSaveButton_Click);
       // 
       // toolStripSeparator1
       // 
       this.toolStripSeparator1.Name = "toolStripSeparator1";
       this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+      // 
+      // fontButton
+      // 
+      this.fontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.fontButton.Image = ((System.Drawing.Image)(resources.GetObject("fontButton.Image")));
+      this.fontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.fontButton.Name = "fontButton";
+      this.fontButton.Size = new System.Drawing.Size(23, 22);
+      this.fontButton.Text = "Font ...";
+      this.fontButton.Click += new System.EventHandler(this.fontButton_Click);
       // 
       // toolStripSeparator2
       // 
@@ -127,23 +138,17 @@
       this.cancelButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.cancelButton.Name = "cancelButton";
       this.cancelButton.Size = new System.Drawing.Size(23, 22);
-      this.cancelButton.Text = "toolStripButton5";
-      // 
-      // fontButton
-      // 
-      this.fontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.fontButton.Image = ((System.Drawing.Image)(resources.GetObject("fontButton.Image")));
-      this.fontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.fontButton.Name = "fontButton";
-      this.fontButton.Size = new System.Drawing.Size(23, 22);
-      this.fontButton.Text = "toolStripButton1";
-      this.fontButton.Click += new System.EventHandler(this.fontButton_Click);
+      this.cancelButton.Text = "Cancel";
       // 
       // fontDialog1
       // 
       this.fontDialog1.ShowApply = true;
       this.fontDialog1.ShowColor = true;
       this.fontDialog1.Apply += new System.EventHandler(this.fontDialog1_Apply);
+      // 
+      // saveFileDialog1
+      // 
+      this.saveFileDialog1.Filter = "PNG Files|*.png";
       // 
       // Form1
       // 
@@ -176,6 +181,7 @@
     private System.Windows.Forms.ToolStripButton cancelButton;
     private System.Windows.Forms.ToolStripButton fontButton;
     private System.Windows.Forms.FontDialog fontDialog1;
+    private System.Windows.Forms.SaveFileDialog saveFileDialog1;
   }
 }
 

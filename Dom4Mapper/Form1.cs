@@ -12,8 +12,6 @@ using System.Windows.Forms;
 
 namespace MapNumbering
 {
-  // TODO: store source image, then make a sopy and add province numbers dynamically when necessary. Perhaps observable collection of provinces as a member and then draw them as they change?
-  // This will help when changing the font and font size
   // - Prompt to save
   // - Fix window aspect when opening a file
   public partial class Form1 : Form
@@ -81,14 +79,50 @@ namespace MapNumbering
 
     private void fileSaveButton_Click(object sender, EventArgs e)
     {
-      /*
-      string outFile = System.IO.Path.GetDirectoryName(MyImageFilename) + @"\" +
-        System.IO.Path.GetFileNameWithoutExtension(MyImageFilename) +
-        "_numbered" +
-        System.IO.Path.GetExtension(MyImageFilename);
+      saveFileDialog1.InitialDirectory = System.IO.Path.GetDirectoryName(MyImageFilename);
+      saveFileDialog1.FileName = System.IO.Path.GetFileNameWithoutExtension(MyImageFilename) +
+        "_numbered";
 
-      MyImage.Save(outFile);
-      */
+      // Displays a SaveFileDialog so the user can save the Image  
+      // assigned to Button2.  
+      saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif|Png Image|*.png";
+      saveFileDialog1.Title = "Save the map image";
+      saveFileDialog1.ShowDialog();
+
+      // If the file name is not an empty string open it for saving.  
+      if (saveFileDialog1.FileName != "")
+      {
+        // Saves the Image via a FileStream created by the OpenFile method.  
+        System.IO.FileStream fs =
+           (System.IO.FileStream)saveFileDialog1.OpenFile();
+        // Saves the Image in the appropriate ImageFormat based upon the  
+        // File type selected in the dialog box.  
+        // NOTE that the FilterIndex property is one-based.  
+        switch (saveFileDialog1.FilterIndex)
+        {
+          case 1:
+            this.pictureBox1.Image.Save(fs,
+               System.Drawing.Imaging.ImageFormat.Jpeg);
+            break;
+
+          case 2:
+            this.pictureBox1.Image.Save(fs,
+               System.Drawing.Imaging.ImageFormat.Bmp);
+            break;
+
+          case 3:
+            this.pictureBox1.Image.Save(fs,
+               System.Drawing.Imaging.ImageFormat.Gif);
+            break;
+
+          case 4:
+            this.pictureBox1.Image.Save(fs,
+               System.Drawing.Imaging.ImageFormat.Png);
+            break;
+        }
+
+        fs.Close();
+      }
     }
 
     bool RectIncludeNeighboringPoint(ref Rectangle r, Point p)
