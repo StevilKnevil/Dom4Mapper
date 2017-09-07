@@ -242,7 +242,7 @@ namespace MapNumbering
     private void updateImage()
     {
       // Stretches the image to fit the pictureBox.
-      pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+      pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
       pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
       pictureBox1.Image = generateImage();
     }

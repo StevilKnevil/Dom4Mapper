@@ -28,33 +28,22 @@
     /// </summary>
     private void InitializeComponent()
     {
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-      this.pictureBox1 = new System.Windows.Forms.PictureBox();
       this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
       this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
       this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-      this.fileOpenButton = new System.Windows.Forms.ToolStripButton();
-      this.fileSaveButton = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-      this.fontButton = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
       this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
-      this.cancelButton = new System.Windows.Forms.ToolStripButton();
       this.fontDialog1 = new System.Windows.Forms.FontDialog();
       this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+      this.pictureBox1 = new System.Windows.Forms.PictureBox();
+      this.fileOpenButton = new System.Windows.Forms.ToolStripButton();
+      this.fileSaveButton = new System.Windows.Forms.ToolStripButton();
+      this.fontButton = new System.Windows.Forms.ToolStripButton();
+      this.cancelButton = new System.Windows.Forms.ToolStripButton();
       this.toolStrip1.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
-      // 
-      // pictureBox1
-      // 
-      this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-      this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.pictureBox1.Location = new System.Drawing.Point(0, 25);
-      this.pictureBox1.Name = "pictureBox1";
-      this.pictureBox1.Size = new System.Drawing.Size(667, 343);
-      this.pictureBox1.TabIndex = 0;
-      this.pictureBox1.TabStop = false;
       // 
       // backgroundWorker1
       // 
@@ -82,45 +71,14 @@
             this.cancelButton});
       this.toolStrip1.Location = new System.Drawing.Point(0, 0);
       this.toolStrip1.Name = "toolStrip1";
-      this.toolStrip1.Size = new System.Drawing.Size(667, 25);
+      this.toolStrip1.Size = new System.Drawing.Size(482, 25);
       this.toolStrip1.TabIndex = 2;
       this.toolStrip1.Text = "toolStrip1";
-      // 
-      // fileOpenButton
-      // 
-      this.fileOpenButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.fileOpenButton.Image = ((System.Drawing.Image)(resources.GetObject("fileOpenButton.Image")));
-      this.fileOpenButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.fileOpenButton.Name = "fileOpenButton";
-      this.fileOpenButton.Size = new System.Drawing.Size(23, 22);
-      this.fileOpenButton.Text = "Open";
-      this.fileOpenButton.Click += new System.EventHandler(this.fileOpenButton_Click);
-      // 
-      // fileSaveButton
-      // 
-      this.fileSaveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.fileSaveButton.Enabled = false;
-      this.fileSaveButton.Image = ((System.Drawing.Image)(resources.GetObject("fileSaveButton.Image")));
-      this.fileSaveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.fileSaveButton.Name = "fileSaveButton";
-      this.fileSaveButton.Size = new System.Drawing.Size(23, 22);
-      this.fileSaveButton.Text = "Save";
-      this.fileSaveButton.Click += new System.EventHandler(this.fileSaveButton_Click);
       // 
       // toolStripSeparator1
       // 
       this.toolStripSeparator1.Name = "toolStripSeparator1";
       this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-      // 
-      // fontButton
-      // 
-      this.fontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.fontButton.Image = ((System.Drawing.Image)(resources.GetObject("fontButton.Image")));
-      this.fontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.fontButton.Name = "fontButton";
-      this.fontButton.Size = new System.Drawing.Size(23, 22);
-      this.fontButton.Text = "Font ...";
-      this.fontButton.Click += new System.EventHandler(this.fontButton_Click);
       // 
       // toolStripSeparator2
       // 
@@ -132,16 +90,6 @@
       this.progressBar.Name = "progressBar";
       this.progressBar.Size = new System.Drawing.Size(100, 22);
       // 
-      // cancelButton
-      // 
-      this.cancelButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.cancelButton.Image = ((System.Drawing.Image)(resources.GetObject("cancelButton.Image")));
-      this.cancelButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-      this.cancelButton.Name = "cancelButton";
-      this.cancelButton.Size = new System.Drawing.Size(23, 22);
-      this.cancelButton.Text = "Cancel";
-      this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-      // 
       // fontDialog1
       // 
       this.fontDialog1.ShowApply = true;
@@ -152,18 +100,69 @@
       // 
       this.saveFileDialog1.Filter = "PNG Files|*.png";
       // 
+      // pictureBox1
+      // 
+      this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+      this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.pictureBox1.Location = new System.Drawing.Point(0, 25);
+      this.pictureBox1.Name = "pictureBox1";
+      this.pictureBox1.Size = new System.Drawing.Size(482, 414);
+      this.pictureBox1.TabIndex = 0;
+      this.pictureBox1.TabStop = false;
+      // 
+      // fileOpenButton
+      // 
+      this.fileOpenButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.fileOpenButton.Image = global::MapNumbering.Properties.Resources.Document_24x;
+      this.fileOpenButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.fileOpenButton.Name = "fileOpenButton";
+      this.fileOpenButton.Size = new System.Drawing.Size(23, 22);
+      this.fileOpenButton.Text = "Open";
+      this.fileOpenButton.Click += new System.EventHandler(this.fileOpenButton_Click);
+      // 
+      // fileSaveButton
+      // 
+      this.fileSaveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.fileSaveButton.Enabled = false;
+      this.fileSaveButton.Image = global::MapNumbering.Properties.Resources.Save_20x;
+      this.fileSaveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.fileSaveButton.Name = "fileSaveButton";
+      this.fileSaveButton.Size = new System.Drawing.Size(23, 22);
+      this.fileSaveButton.Text = "Save";
+      this.fileSaveButton.Click += new System.EventHandler(this.fileSaveButton_Click);
+      // 
+      // fontButton
+      // 
+      this.fontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.fontButton.Image = global::MapNumbering.Properties.Resources.Font_16x_24;
+      this.fontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.fontButton.Name = "fontButton";
+      this.fontButton.Size = new System.Drawing.Size(23, 22);
+      this.fontButton.Text = "Font ...";
+      this.fontButton.Click += new System.EventHandler(this.fontButton_Click);
+      // 
+      // cancelButton
+      // 
+      this.cancelButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.cancelButton.Image = global::MapNumbering.Properties.Resources.Cancel_16x_24;
+      this.cancelButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.cancelButton.Name = "cancelButton";
+      this.cancelButton.Size = new System.Drawing.Size(23, 22);
+      this.cancelButton.Text = "Cancel";
+      this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(667, 368);
+      this.ClientSize = new System.Drawing.Size(482, 439);
       this.Controls.Add(this.pictureBox1);
       this.Controls.Add(this.toolStrip1);
       this.Name = "Form1";
       this.Text = "Form1";
-      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.toolStrip1.ResumeLayout(false);
       this.toolStrip1.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
