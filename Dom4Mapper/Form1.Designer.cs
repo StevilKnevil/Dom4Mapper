@@ -59,6 +59,7 @@
       // backgroundWorker1
       // 
       this.backgroundWorker1.WorkerReportsProgress = true;
+      this.backgroundWorker1.WorkerSupportsCancellation = true;
       this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
       this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
       this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
@@ -139,6 +140,7 @@
       this.cancelButton.Name = "cancelButton";
       this.cancelButton.Size = new System.Drawing.Size(23, 22);
       this.cancelButton.Text = "Cancel";
+      this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
       // 
       // fontDialog1
       // 

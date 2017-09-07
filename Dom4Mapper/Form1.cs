@@ -125,6 +125,11 @@ namespace MapNumbering
       }
     }
 
+    private void cancelButton_Click(object sender, EventArgs e)
+    {
+      backgroundWorker1.CancelAsync();
+    }
+
     bool RectIncludeNeighboringPoint(ref Rectangle r, Point p)
     {
       if (r.Contains(p))
@@ -171,6 +176,12 @@ namespace MapNumbering
       {
         for (int x = 0; x < bmp.Width; x++)
         {
+          if (bgw.CancellationPending)
+          {
+            e.Cancel = true;
+            return;
+          }
+
           var col = bmp.GetPixel(x, y);
           if (col.R == 255 && col.G == 255 && col.B == 255)
           {
@@ -218,7 +229,10 @@ namespace MapNumbering
       cancelButton.Visible = false;
       progressBar.Visible = false;
 
-      provinces = e.Result as List<Point>;
+      if (e.Cancelled == false)
+      {
+        provinces = e.Result as List<Point>;
+      }
 
       updateImage();
 
@@ -279,5 +293,6 @@ namespace MapNumbering
     {
       updateImage();
     }
+
   }
 }
