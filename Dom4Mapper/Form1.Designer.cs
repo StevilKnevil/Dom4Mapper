@@ -36,10 +36,11 @@
       this.fileOpenButton = new System.Windows.Forms.ToolStripButton();
       this.fileSaveButton = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+      this.fontComboBox = new System.Windows.Forms.ToolStripComboBox();
+      this.fontSizeCombo = new System.Windows.Forms.ToolStripComboBox();
       this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
       this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
       this.cancelButton = new System.Windows.Forms.ToolStripButton();
-      this.fontSizeCombo = new System.Windows.Forms.ToolStripComboBox();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.toolStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -73,6 +74,7 @@
             this.fileOpenButton,
             this.fileSaveButton,
             this.toolStripSeparator1,
+            this.fontComboBox,
             this.fontSizeCombo,
             this.toolStripSeparator2,
             this.progressBar,
@@ -109,6 +111,16 @@
       this.toolStripSeparator1.Name = "toolStripSeparator1";
       this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
       // 
+      // fontComboBox
+      // 
+      this.fontComboBox.Name = "fontComboBox";
+      this.fontComboBox.Size = new System.Drawing.Size(121, 25);
+      // 
+      // fontSizeCombo
+      // 
+      this.fontSizeCombo.Name = "fontSizeCombo";
+      this.fontSizeCombo.Size = new System.Drawing.Size(75, 25);
+      // 
       // toolStripSeparator2
       // 
       this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -122,17 +134,11 @@
       // cancelButton
       // 
       this.cancelButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.cancelButton.Enabled = false;
       this.cancelButton.Image = ((System.Drawing.Image)(resources.GetObject("cancelButton.Image")));
       this.cancelButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.cancelButton.Name = "cancelButton";
       this.cancelButton.Size = new System.Drawing.Size(23, 22);
       this.cancelButton.Text = "toolStripButton5";
-      // 
-      // fontSizeCombo
-      // 
-      this.fontSizeCombo.Name = "fontSizeCombo";
-      this.fontSizeCombo.Size = new System.Drawing.Size(121, 25);
       // 
       // Form1
       // 
@@ -164,6 +170,7 @@
     private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     private System.Windows.Forms.ToolStripProgressBar progressBar;
     private System.Windows.Forms.ToolStripButton cancelButton;
+    private System.Windows.Forms.ToolStripComboBox fontComboBox;
   }
 }
 

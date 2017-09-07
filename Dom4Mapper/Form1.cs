@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +18,28 @@ namespace MapNumbering
   // - Fix window aspect when opening a file
   public partial class Form1 : Form
   {
-    Paloma.TargaImage MyTargaImage;
-    private Bitmap MyImage;
+    private Bitmap srcBitmap;
     private string MyImageFilename;
+    private List<Point> provinces = new List<Point>();
+
+
     public Form1()
     {
       InitializeComponent();
+
+      using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
+      {
+        FontFamily[] fontFamilies = fontsCollection.Families;
+        foreach (FontFamily font in fontFamilies)
+        {
+          fontComboBox.Items.Add(font.Name);
+        }
+        fontComboBox.SelectedItem = "Arial";
+      }
+
+      cancelButton.Visible = false;
+      progressBar.Visible = false;
+
     }
 
     ~Form1()
@@ -31,17 +49,31 @@ namespace MapNumbering
 
     private void setImage(string imagePath)
     {
-      if (MyImage != null)
+      if (srcBitmap != null)
       {
-        MyTargaImage.Dispose();
-        MyImage.Dispose();
+        srcBitmap.Dispose();
+        srcBitmap = null;
       }
+      if (pictureBox1.Image != null)
+      {
+        pictureBox1.Image.Dispose();
+        pictureBox1.Image = null;
+      }
+      provinces = new List<Point>();
 
       if (System.IO.File.Exists(imagePath))
       {
-        MyTargaImage = new Paloma.TargaImage(MyImageFilename);
-        MyImage = MyTargaImage.Image;
+        using (var tgaImage = new Paloma.TargaImage(imagePath))
+        {
+          srcBitmap = new Bitmap(tgaImage.Image);
+        }
+
+        // Todo: Duplicated code
+        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+        pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
+        pictureBox1.Image = generateImage();
       }
+
     }
 
     private void fileOpenButton_Click(object sender, EventArgs e)
@@ -52,19 +84,23 @@ namespace MapNumbering
 
         setImage(MyImageFilename);
 
-        cancelButton.Enabled = false;
-        backgroundWorker1.RunWorkerAsync();
+        cancelButton.Visible = true;
+        progressBar.Visible = true;
+        provinces.Clear();
+        backgroundWorker1.RunWorkerAsync(srcBitmap);
       }
     }
 
     private void fileSaveButton_Click(object sender, EventArgs e)
     {
+      /*
       string outFile = System.IO.Path.GetDirectoryName(MyImageFilename) + @"\" +
         System.IO.Path.GetFileNameWithoutExtension(MyImageFilename) +
         "_numbered" +
         System.IO.Path.GetExtension(MyImageFilename);
 
       MyImage.Save(outFile);
+      */
     }
 
     bool RectIncludeNeighboringPoint(ref Rectangle r, Point p)
@@ -105,13 +141,15 @@ namespace MapNumbering
 
     private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
     {
+      BackgroundWorker bgw = sender as BackgroundWorker;
+      Bitmap bmp = e.Argument as Bitmap;
       List<Rectangle> provs = new List<Rectangle>();
       // parse image for regions
-      for (int y = MyImage.Height - 1; y >= 0; y--)
+      for (int y = bmp.Height - 1; y >= 0; y--)
       {
-        for (int x = 0; x < MyImage.Width; x++)
+        for (int x = 0; x < bmp.Width; x++)
         {
-          var col = MyImage.GetPixel(x, y);
+          var col = bmp.GetPixel(x, y);
           if (col.R == 255 && col.G == 255 && col.B == 255)
           {
             // This is a Province
@@ -135,31 +173,17 @@ namespace MapNumbering
             }
           }
         }
-        (sender as BackgroundWorker).ReportProgress(((MyImage.Height-y) * 100) / MyImage.Height);
+        bgw.ReportProgress(((bmp.Height-y) * 100) / bmp.Height);
       }
 
-      // render the region numbers
-      int num = 1;
-      using (var graphics = Graphics.FromImage(MyImage))
+      // return the result
+      List<Point> result = new List<Point>();
+      foreach (var r in provs)
       {
-        Brush b = new SolidBrush(Color.Black);
-        Font f = new Font("Arial", 50, FontStyle.Bold);
-        foreach (Rectangle r in provs)
-        {
-          var sz = graphics.MeasureString(num.ToString(), f, 10000);
-          Point pt = new Point(r.X - (int)(sz.Width / 2), r.Y - (int)(sz.Height / 2));
-          if (pt.X < 0)
-            pt.X = 0;
-          if (pt.Y < 0)
-            pt.Y = 0;
-          if (pt.X + sz.Width > MyImage.Width)
-            pt.X = MyImage.Width - (int)sz.Width;
-          if (pt.Y + sz.Height > MyImage.Height)
-            pt.Y = MyImage.Height - (int)sz.Height;
-          graphics.DrawString(num.ToString(), f, b, pt);
-          num++;
-        }
+        // add the centre point
+        result.Add(new Point(r.X + (r.Width / 2), r.Y + (r.Height / 2)));
       }
+      e.Result = result;
     }
 
     private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -169,14 +193,47 @@ namespace MapNumbering
 
     private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      cancelButton.Enabled = false;
+      cancelButton.Visible = false;
+      progressBar.Visible = false;
+
+      provinces = e.Result as List<Point>;
 
       // Stretches the image to fit the pictureBox.
       pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
       pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
-      pictureBox1.Image = (Image)MyImage;
+      pictureBox1.Image = generateImage();
 
       fileSaveButton.Enabled = true;
+    }
+
+    private Bitmap generateImage()
+    {
+      Bitmap newImage = new Bitmap(srcBitmap);
+
+      // render the region numbers
+      int num = 1;
+      using (var graphics = Graphics.FromImage(newImage))
+      {
+        Brush b = new SolidBrush(Color.Black);
+        Font f = new Font("Arial", 50, FontStyle.Bold);
+        foreach (var prov in provinces)
+        {
+          var sz = graphics.MeasureString(num.ToString(), f, 10000);
+          Point pt = new Point(prov.X - (int)(sz.Width / 2), prov.Y - (int)(sz.Height / 2));
+          if (pt.X< 0)
+            pt.X = 0;
+          if (pt.Y< 0)
+            pt.Y = 0;
+          if (pt.X + sz.Width > newImage.Width)
+            pt.X = newImage.Width - (int)sz.Width;
+          if (pt.Y + sz.Height > newImage.Height)
+            pt.Y = newImage.Height - (int)sz.Height;
+          graphics.DrawString(num.ToString(), f, b, pt);
+          num++;
+        }
+      }
+
+      return newImage;
     }
 
   }
