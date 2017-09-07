@@ -17,12 +17,30 @@ namespace MapNumbering
     public Form1()
     {
       InitializeComponent();
+    }
+
+    private void fileOpenButton_Click(object sender, EventArgs e)
+    {
       if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
       {
         MyImageFilename = openFileDialog1.FileName;
-        ShowMyImage(MyImageFilename, pictureBox1.Width, pictureBox1.Height);
+        // TODO: Dispose the tgaImage and MyImage
+        Paloma.TargaImage tgaImage = new Paloma.TargaImage(MyImageFilename);
+        MyImage = tgaImage.Image;
+
+        cancelButton.Enabled = false;
         backgroundWorker1.RunWorkerAsync();
       }
+    }
+
+    private void fileSaveButton_Click(object sender, EventArgs e)
+    {
+      string outFile = System.IO.Path.GetDirectoryName(MyImageFilename) + @"\" +
+        System.IO.Path.GetFileNameWithoutExtension(MyImageFilename) +
+        "_numbered" +
+        System.IO.Path.GetExtension(MyImageFilename);
+
+      MyImage.Save(outFile);
     }
 
     public void ShowMyImage(String fileToDisplay, int xSize, int ySize)
@@ -76,7 +94,7 @@ namespace MapNumbering
 
       List<Rectangle> provs = new List<Rectangle>();
       // parse image for regions
-      for (int y = MyImage.Height-1; y >= 0; y--)
+      for (int y = MyImage.Height - 1; y >= 0; y--)
       {
         for (int x = 0; x < MyImage.Width; x++)
         {
@@ -86,10 +104,10 @@ namespace MapNumbering
             // This is a Province
             // Filter to check to see if we already have a province right next to this
             bool dupe = false;
-            for (int i= 0; i< provs.Count; i++)
+            for (int i = 0; i < provs.Count; i++)
             {
               var prov = provs[i];
-              if (RectIncludeNeighboringPoint(ref prov, new Point(x,y)))
+              if (RectIncludeNeighboringPoint(ref prov, new Point(x, y)))
               {
                 // Dupe found
                 dupe = true;
@@ -133,30 +151,20 @@ namespace MapNumbering
 
     private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
-      this.progressBar1.Value = e.ProgressPercentage;
-      this.progressBar1.Refresh();
+      this.progressBar.Value = e.ProgressPercentage;
     }
 
     private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      progressBar1.Visible = false;
+      cancelButton.Enabled = false;
+
       // Stretches the image to fit the pictureBox.
       pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
       pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
       pictureBox1.Image = (Image)MyImage;
 
-      string outFile = System.IO.Path.GetDirectoryName(MyImageFilename) + @"\" +
-        System.IO.Path.GetFileNameWithoutExtension(MyImageFilename) +
-        "_numbered" +
-        System.IO.Path.GetExtension(MyImageFilename);
-
-      MyImage.Save(outFile);
+      fileSaveButton.Enabled = true;
     }
 
-    private void Form1_Load(object sender, EventArgs e)
-    {
-
-    }
   }
-
 }
