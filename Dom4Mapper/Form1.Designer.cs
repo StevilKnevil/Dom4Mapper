@@ -36,11 +36,11 @@
       this.fileOpenButton = new System.Windows.Forms.ToolStripButton();
       this.fileSaveButton = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-      this.fontComboBox = new System.Windows.Forms.ToolStripComboBox();
-      this.fontSizeCombo = new System.Windows.Forms.ToolStripComboBox();
       this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
       this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
       this.cancelButton = new System.Windows.Forms.ToolStripButton();
+      this.fontButton = new System.Windows.Forms.ToolStripButton();
+      this.fontDialog1 = new System.Windows.Forms.FontDialog();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.toolStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -74,8 +74,7 @@
             this.fileOpenButton,
             this.fileSaveButton,
             this.toolStripSeparator1,
-            this.fontComboBox,
-            this.fontSizeCombo,
+            this.fontButton,
             this.toolStripSeparator2,
             this.progressBar,
             this.cancelButton});
@@ -111,16 +110,6 @@
       this.toolStripSeparator1.Name = "toolStripSeparator1";
       this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
       // 
-      // fontComboBox
-      // 
-      this.fontComboBox.Name = "fontComboBox";
-      this.fontComboBox.Size = new System.Drawing.Size(121, 25);
-      // 
-      // fontSizeCombo
-      // 
-      this.fontSizeCombo.Name = "fontSizeCombo";
-      this.fontSizeCombo.Size = new System.Drawing.Size(75, 25);
-      // 
       // toolStripSeparator2
       // 
       this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -139,6 +128,22 @@
       this.cancelButton.Name = "cancelButton";
       this.cancelButton.Size = new System.Drawing.Size(23, 22);
       this.cancelButton.Text = "toolStripButton5";
+      // 
+      // fontButton
+      // 
+      this.fontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.fontButton.Image = ((System.Drawing.Image)(resources.GetObject("fontButton.Image")));
+      this.fontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.fontButton.Name = "fontButton";
+      this.fontButton.Size = new System.Drawing.Size(23, 22);
+      this.fontButton.Text = "toolStripButton1";
+      this.fontButton.Click += new System.EventHandler(this.fontButton_Click);
+      // 
+      // fontDialog1
+      // 
+      this.fontDialog1.ShowApply = true;
+      this.fontDialog1.ShowColor = true;
+      this.fontDialog1.Apply += new System.EventHandler(this.fontDialog1_Apply);
       // 
       // Form1
       // 
@@ -166,11 +171,11 @@
     private System.Windows.Forms.ToolStripButton fileOpenButton;
     private System.Windows.Forms.ToolStripButton fileSaveButton;
     private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-    private System.Windows.Forms.ToolStripComboBox fontSizeCombo;
     private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     private System.Windows.Forms.ToolStripProgressBar progressBar;
     private System.Windows.Forms.ToolStripButton cancelButton;
-    private System.Windows.Forms.ToolStripComboBox fontComboBox;
+    private System.Windows.Forms.ToolStripButton fontButton;
+    private System.Windows.Forms.FontDialog fontDialog1;
   }
 }
 

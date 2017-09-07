@@ -27,19 +27,10 @@ namespace MapNumbering
     {
       InitializeComponent();
 
-      using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
-      {
-        FontFamily[] fontFamilies = fontsCollection.Families;
-        foreach (FontFamily font in fontFamilies)
-        {
-          fontComboBox.Items.Add(font.Name);
-        }
-        fontComboBox.SelectedItem = "Arial";
-      }
-
       cancelButton.Visible = false;
       progressBar.Visible = false;
 
+      fontDialog1.Font = new Font("Arial", 48);
     }
 
     ~Form1()
@@ -68,10 +59,7 @@ namespace MapNumbering
           srcBitmap = new Bitmap(tgaImage.Image);
         }
 
-        // Todo: Duplicated code
-        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-        pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
-        pictureBox1.Image = generateImage();
+        updateImage();
       }
 
     }
@@ -198,24 +186,32 @@ namespace MapNumbering
 
       provinces = e.Result as List<Point>;
 
-      // Stretches the image to fit the pictureBox.
-      pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-      pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
-      pictureBox1.Image = generateImage();
+      updateImage();
 
       fileSaveButton.Enabled = true;
     }
 
+    private void updateImage()
+    {
+      // Stretches the image to fit the pictureBox.
+      pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+      pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
+      pictureBox1.Image = generateImage();
+    }
+
     private Bitmap generateImage()
     {
+      if (srcBitmap == null)
+        return null;
+
       Bitmap newImage = new Bitmap(srcBitmap);
 
       // render the region numbers
       int num = 1;
       using (var graphics = Graphics.FromImage(newImage))
       {
-        Brush b = new SolidBrush(Color.Black);
-        Font f = new Font("Arial", 50, FontStyle.Bold);
+        Brush b = new SolidBrush(fontDialog1.Color);
+        Font f = fontDialog1.Font;
         foreach (var prov in provinces)
         {
           var sz = graphics.MeasureString(num.ToString(), f, 10000);
@@ -228,6 +224,7 @@ namespace MapNumbering
             pt.X = newImage.Width - (int)sz.Width;
           if (pt.Y + sz.Height > newImage.Height)
             pt.Y = newImage.Height - (int)sz.Height;
+
           graphics.DrawString(num.ToString(), f, b, pt);
           num++;
         }
@@ -236,5 +233,17 @@ namespace MapNumbering
       return newImage;
     }
 
+    private void fontButton_Click(object sender, EventArgs e)
+    {
+      if (fontDialog1.ShowDialog() != DialogResult.Cancel)
+      {
+        updateImage();
+      }
+    }
+
+    private void fontDialog1_Apply(object sender, EventArgs e)
+    {
+      updateImage();
+    }
   }
 }
