@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MapNumbering
+namespace Dom4Mapper
 {
   // - Prompt to save
   // - Fix window aspect when opening a file
