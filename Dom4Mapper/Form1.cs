@@ -36,31 +36,8 @@ namespace Dom4Mapper
       setImage("");
     }
 
-    private void setImage(string imagePath)
-    {
-      if (srcBitmap != null)
-      {
-        srcBitmap.Dispose();
-        srcBitmap = null;
-      }
-      if (pictureBox1.Image != null)
-      {
-        pictureBox1.Image.Dispose();
-        pictureBox1.Image = null;
-      }
-      provinces = new List<Point>();
 
-      if (System.IO.File.Exists(imagePath))
-      {
-        using (var tgaImage = new Paloma.TargaImage(imagePath))
-        {
-          srcBitmap = new Bitmap(tgaImage.Image);
-        }
-
-        updateImage();
-      }
-
-    }
+    #region Toolbar
 
     private void fileOpenButton_Click(object sender, EventArgs e)
     {
@@ -130,41 +107,22 @@ namespace Dom4Mapper
       backgroundWorker1.CancelAsync();
     }
 
-    bool RectIncludeNeighboringPoint(ref Rectangle r, Point p)
+    private void fontButton_Click(object sender, EventArgs e)
     {
-      if (r.Contains(p))
+      if (fontDialog1.ShowDialog() != DialogResult.Cancel)
       {
-        // Nothing to do
-        return true;
+        updateImage();
       }
-
-      bool success = false;
-      // See if the point is neighbouring & grow if so
-      if (r.Contains(p.X - 1, p.Y))
-      {
-        r.Width++;
-        success = true;
-      }
-      if (r.Contains(p.X + 1, p.Y))
-      {
-        r.X--;
-        r.Width++;
-        success = true;
-      }
-      if (r.Contains(p.X, p.Y - 1))
-      {
-        r.Height++;
-        success = true;
-      }
-      if (r.Contains(p.X, p.Y + 1))
-      {
-        r.Y--;
-        r.Height++;
-        success = true;
-      }
-
-      return success;
     }
+
+    private void fontDialog1_Apply(object sender, EventArgs e)
+    {
+      updateImage();
+    }
+
+    #endregion
+
+    #region BGW
 
     private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
     {
@@ -239,6 +197,34 @@ namespace Dom4Mapper
       fileSaveButton.Enabled = true;
     }
 
+    #endregion
+
+    private void setImage(string imagePath)
+    {
+      if (srcBitmap != null)
+      {
+        srcBitmap.Dispose();
+        srcBitmap = null;
+      }
+      if (pictureBox1.Image != null)
+      {
+        pictureBox1.Image.Dispose();
+        pictureBox1.Image = null;
+      }
+      provinces = new List<Point>();
+
+      if (System.IO.File.Exists(imagePath))
+      {
+        using (var tgaImage = new Paloma.TargaImage(imagePath))
+        {
+          srcBitmap = new Bitmap(tgaImage.Image);
+        }
+
+        updateImage();
+      }
+
+    }
+
     private void updateImage()
     {
       // Stretches the image to fit the pictureBox.
@@ -281,18 +267,44 @@ namespace Dom4Mapper
       return newImage;
     }
 
-    private void fontButton_Click(object sender, EventArgs e)
+    #region helpers
+
+    bool RectIncludeNeighboringPoint(ref Rectangle r, Point p)
     {
-      if (fontDialog1.ShowDialog() != DialogResult.Cancel)
+      if (r.Contains(p))
       {
-        updateImage();
+        // Nothing to do
+        return true;
       }
+
+      bool success = false;
+      // See if the point is neighbouring & grow if so
+      if (r.Contains(p.X - 1, p.Y))
+      {
+        r.Width++;
+        success = true;
+      }
+      if (r.Contains(p.X + 1, p.Y))
+      {
+        r.X--;
+        r.Width++;
+        success = true;
+      }
+      if (r.Contains(p.X, p.Y - 1))
+      {
+        r.Height++;
+        success = true;
+      }
+      if (r.Contains(p.X, p.Y + 1))
+      {
+        r.Y--;
+        r.Height++;
+        success = true;
+      }
+
+      return success;
     }
 
-    private void fontDialog1_Apply(object sender, EventArgs e)
-    {
-      updateImage();
-    }
-
+    #endregion
   }
 }
