@@ -230,8 +230,14 @@ namespace Dom4Mapper
       // Stretches the image to fit the pictureBox.
       pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
       pictureBox1.ClientSize = new Size(pictureBox1.Width, pictureBox1.Height);
+      if (pictureBox1.Image != null)
+      {
+        pictureBox1.Image.Dispose();
+        pictureBox1.Image = null;
+      }
       pictureBox1.Image = generateImage();
     }
+
 
     private Bitmap generateImage()
     {
@@ -306,5 +312,44 @@ namespace Dom4Mapper
     }
 
     #endregion
+
+    private bool dragging = false;
+    private Point dragStart;
+    private Point dragOffset = new Point(0, 0);
+    private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+    {
+      if (e.Button == MouseButtons.Left)
+      {
+        this.dragging = true;
+        dragStart = new Point(e.X, e.Y);
+      }
+      else
+      {
+        this.dragging = false;
+      }
+    }
+
+    private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+    {
+      if (this.dragging)
+      {
+        this.dragging = false;
+      }
+    }
+
+    private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+    {
+      if (this.dragging)
+      {
+        dragOffset.X = e.X - dragStart.X;
+        dragOffset.Y = e.Y - dragStart.Y;
+        // transform the picture to freflect dragging
+        pictureBox1.Offset = new Point(pictureBox1.Offset.X + dragOffset.X,
+          pictureBox1.Offset.Y + dragOffset.Y);
+
+        dragStart.X = e.X;
+        dragStart.Y = e.Y;
+      }
+    }
   }
 }

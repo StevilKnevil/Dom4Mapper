@@ -40,7 +40,7 @@
       this.cancelButton = new System.Windows.Forms.ToolStripButton();
       this.fontDialog1 = new System.Windows.Forms.FontDialog();
       this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-      this.pictureBox1 = new System.Windows.Forms.PictureBox();
+      this.pictureBox1 = new PanningPictureBox();
       this.toolStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
@@ -143,13 +143,15 @@
       // 
       // pictureBox1
       // 
-      this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
       this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
       this.pictureBox1.Location = new System.Drawing.Point(0, 25);
       this.pictureBox1.Name = "pictureBox1";
       this.pictureBox1.Size = new System.Drawing.Size(482, 414);
       this.pictureBox1.TabIndex = 0;
       this.pictureBox1.TabStop = false;
+      this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+      this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+      this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
       // 
       // Form1
       // 
@@ -170,7 +172,7 @@
 
     #endregion
 
-    private System.Windows.Forms.PictureBox pictureBox1;
+    private PanningPictureBox pictureBox1;
     private System.ComponentModel.BackgroundWorker backgroundWorker1;
     private System.Windows.Forms.OpenFileDialog openFileDialog1;
     private System.Windows.Forms.ToolStrip toolStrip1;

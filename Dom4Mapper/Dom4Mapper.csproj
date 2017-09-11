@@ -61,6 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PanningPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TargaImage.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
