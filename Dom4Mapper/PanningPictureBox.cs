@@ -16,7 +16,17 @@ namespace Dom4Mapper
       get { return offset; }
       set
       {
+        // TODO: handle this all in 'image' coordinates, and have screen <-> image conversion helper fns
         offset = value;
+        // clamp
+        while (offset.X >= this.Size.Width)
+          offset.X -= this.Size.Width;
+        while (offset.Y >= this.Size.Height)
+          offset.Y -= this.Size.Height;
+        while (offset.X < 0)
+          offset.X += this.Size.Width;
+        while (offset.Y < 0)
+          offset.Y += this.Size.Height;
         this.Refresh();
       }
     }
@@ -33,15 +43,13 @@ namespace Dom4Mapper
       r.Y += Offset.Y;
       g.DrawImage(this.Image, r);
 
-      if (r.X > 0 && r.Y > 0)
-      {
-        r.X -= r.Width;
-        g.DrawImage(this.Image, r);
-        r.Y -= r.Height;
-        g.DrawImage(this.Image, r);
-        r.X += r.Width;
-        g.DrawImage(this.Image, r);
-      }
+      // Draw for tling
+      r.X -= r.Width;
+      g.DrawImage(this.Image, r);
+      r.Y -= r.Height;
+      g.DrawImage(this.Image, r);
+      r.X += r.Width;
+      g.DrawImage(this.Image, r);
     }
 
 
