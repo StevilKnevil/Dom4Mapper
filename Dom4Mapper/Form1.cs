@@ -19,7 +19,7 @@ namespace Dom4Mapper
     private Bitmap srcBitmap;
     private string MyImageFilename;
     private List<Point> provinces = new List<Point>();
-
+    private LayeredImage layeredImage = new LayeredImage();
 
     public Form1()
     {
@@ -211,13 +211,14 @@ namespace Dom4Mapper
         pictureBox1.Image.Dispose();
         pictureBox1.Image = null;
       }
-      provinces = new List<Point>();
+
+      provinces.Clear();
 
       if (System.IO.File.Exists(imagePath))
       {
         using (var tgaImage = new Paloma.TargaImage(imagePath))
         {
-          srcBitmap = new Bitmap(tgaImage.Image);
+          layeredImage.BackgroundImage = new Bitmap(tgaImage.Image);
         }
 
         updateImage();
@@ -235,16 +236,19 @@ namespace Dom4Mapper
         pictureBox1.Image.Dispose();
         pictureBox1.Image = null;
       }
-      pictureBox1.Image = generateImage();
+      // TODO: Update province numbers layer: generateImage();
+      pictureBox1.Image = layeredImage.GetFinalImage();
     }
 
 
     private Bitmap generateImage()
     {
-      if (srcBitmap == null)
+      if (layeredImage.BackgroundImage == null)
         return null;
 
-      Bitmap newImage = new Bitmap(srcBitmap);
+      Bitmap newImage = new Bitmap(
+        layeredImage.BackgroundImage.Size.Width,
+        layeredImage.BackgroundImage.Size.Height);
 
       // render the region numbers
       int num = 1;
@@ -270,6 +274,7 @@ namespace Dom4Mapper
         }
       }
 
+      layeredImage.Layers.Insert(0, newImage);
       return newImage;
     }
 
