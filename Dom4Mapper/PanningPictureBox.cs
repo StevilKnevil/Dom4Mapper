@@ -23,6 +23,9 @@ namespace Dom4Mapper
 
     protected override void OnPaint(PaintEventArgs pe)
     {
+      if (Image == null)
+        return;
+
       var g = pe.Graphics;
       // TODO: Maintian aspect ratio
       var r = new Rectangle(new Point(0,0), this.Size);
