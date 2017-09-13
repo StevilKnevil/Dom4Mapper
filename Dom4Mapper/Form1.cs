@@ -216,8 +216,10 @@ namespace Dom4Mapper
       }
 
       Bitmap img = generateProvinceNumersImage();
-      checkedListBox1.Items.Add("Provinces", true);
-      layeredImage.Layers.Insert(0, new LayeredImage.Layer(img));
+      int layerIndex = 0;
+      layeredImage.Layers.Insert(layerIndex, new LayeredImage.Layer(img));
+      checkedListBox1.Items.Insert(layerIndex, "Provinces");
+      checkedListBox1.SetItemChecked(layerIndex, layeredImage.Layers[layerIndex].Visible);
 
       updateImage();
 
@@ -230,7 +232,7 @@ namespace Dom4Mapper
     private Point dragOffset = new Point(0, 0);
     private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
     {
-      if (e.Button == MouseButtons.Left)
+      if (e.Button == MouseButtons.Middle)
       {
         this.dragging = true;
         dragStart = new Point(e.X, e.Y);
@@ -262,6 +264,11 @@ namespace Dom4Mapper
         dragStart.X = e.X;
         dragStart.Y = e.Y;
       }
+    }
+
+    private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+    {
+      layeredImage.Layers[e.Index].Visible = (e.NewValue == CheckState.Checked);
     }
   }
 }

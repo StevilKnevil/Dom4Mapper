@@ -45,16 +45,16 @@
       this.toolStrip2 = new System.Windows.Forms.ToolStrip();
       this.addLayerButton = new System.Windows.Forms.ToolStripButton();
       this.removeLayerButton = new System.Windows.Forms.ToolStripButton();
-      this.statusStrip1 = new System.Windows.Forms.StatusStrip();
       this.pictureBox1 = new Dom4Mapper.PanningPictureBox();
+      this.statusStrip1 = new System.Windows.Forms.StatusStrip();
       this.toolStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
       this.splitContainer1.Panel1.SuspendLayout();
       this.splitContainer1.Panel2.SuspendLayout();
       this.splitContainer1.SuspendLayout();
       this.toolStrip2.SuspendLayout();
-      this.statusStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+      this.statusStrip1.SuspendLayout();
       this.SuspendLayout();
       // 
       // openFileDialog1
@@ -169,6 +169,7 @@
       this.checkedListBox1.Name = "checkedListBox1";
       this.checkedListBox1.Size = new System.Drawing.Size(160, 367);
       this.checkedListBox1.TabIndex = 4;
+      this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
       // 
       // toolStrip2
       // 
@@ -199,17 +200,6 @@
       this.removeLayerButton.Size = new System.Drawing.Size(23, 22);
       this.removeLayerButton.Text = "Remove Layer";
       // 
-      // statusStrip1
-      // 
-      this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.progressBar,
-            this.cancelButton});
-      this.statusStrip1.Location = new System.Drawing.Point(0, 417);
-      this.statusStrip1.Name = "statusStrip1";
-      this.statusStrip1.Size = new System.Drawing.Size(482, 22);
-      this.statusStrip1.TabIndex = 6;
-      this.statusStrip1.Text = "statusStrip1";
-      // 
       // pictureBox1
       // 
       this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -222,6 +212,17 @@
       this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
       this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
       this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+      // 
+      // statusStrip1
+      // 
+      this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.progressBar,
+            this.cancelButton});
+      this.statusStrip1.Location = new System.Drawing.Point(0, 417);
+      this.statusStrip1.Name = "statusStrip1";
+      this.statusStrip1.Size = new System.Drawing.Size(482, 22);
+      this.statusStrip1.TabIndex = 6;
+      this.statusStrip1.Text = "statusStrip1";
       // 
       // Form1
       // 
@@ -242,9 +243,9 @@
       this.splitContainer1.ResumeLayout(false);
       this.toolStrip2.ResumeLayout(false);
       this.toolStrip2.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.statusStrip1.ResumeLayout(false);
       this.statusStrip1.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 

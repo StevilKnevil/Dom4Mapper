@@ -21,20 +21,22 @@ namespace Dom4Mapper
       }
 
       public Bitmap Image { get; set; }
-      public bool Visible { get; set; }
-      public int Transparency { get; set; }
 
-      public event EventHandler LayerChanged
-      {
-        add
+      private bool visible = true;
+      public bool Visible {
+        get { return visible; }
+        set
         {
-          // Subscription logic here
-        }
-        remove
-        {
-          // Unsubscription logic here
+          visible = true;
+          if (LayerChanged != null)
+            LayerChanged(this, new EventArgs());
         }
       }
+
+      public int Transparency { get; set; }
+
+      public delegate void LayerChangedHandler(Layer L, EventArgs e);
+      public event LayerChangedHandler LayerChanged;
     }
 
     public ObservableCollection<Layer> Layers = new ObservableCollection<Layer>();
