@@ -161,7 +161,7 @@ namespace Dom4Mapper
     }
 
 
-    private Bitmap generateImage()
+    private Bitmap generateProvinceNumersImage()
     {
       if (layeredImage.BackgroundImage == null)
         return null;
@@ -194,7 +194,6 @@ namespace Dom4Mapper
         }
       }
 
-      layeredImage.Layers.Insert(0, newImage);
       return newImage;
     }
 
@@ -212,8 +211,13 @@ namespace Dom4Mapper
 
       if (e.Cancelled == false)
       {
+        // Copy the result
         provinces = e.Result as List<Point>;
       }
+
+      Bitmap img = generateProvinceNumersImage();
+      checkedListBox1.Items.Add("Provinces", true);
+      layeredImage.Layers.Insert(0, new LayeredImage.Layer(img));
 
       updateImage();
 
