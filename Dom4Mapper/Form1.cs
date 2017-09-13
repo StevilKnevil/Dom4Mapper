@@ -16,10 +16,10 @@ namespace Dom4Mapper
   // - Fix window aspect when opening a file
   public partial class Form1 : Form
   {
-    private Bitmap srcBitmap;
     private string MyImageFilename;
     private List<Point> provinces = new List<Point>();
     private LayeredImage layeredImage = new LayeredImage();
+    ProvinceExtractor provinceExtractor = new ProvinceExtractor();
 
     public Form1()
     {
@@ -29,13 +29,15 @@ namespace Dom4Mapper
       progressBar.Visible = false;
 
       fontDialog1.Font = new Font("Arial", 48);
+
+      this.provinceExtractor.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.provinceExtractor_ProgressChanged);
+      this.provinceExtractor.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.provinceExtractor_RunWorkerCompleted);
     }
 
     ~Form1()
     {
       setImage("");
     }
-
 
     #region Toolbar
 
@@ -50,7 +52,7 @@ namespace Dom4Mapper
         cancelButton.Visible = true;
         progressBar.Visible = true;
         provinces.Clear();
-        backgroundWorker1.RunWorkerAsync(srcBitmap);
+        provinceExtractor.ProcessImage(layeredImage.BackgroundImage);
       }
     }
 
@@ -104,7 +106,7 @@ namespace Dom4Mapper
 
     private void cancelButton_Click(object sender, EventArgs e)
     {
-      backgroundWorker1.CancelAsync();
+      provinceExtractor.Cancel();
     }
 
     private void fontButton_Click(object sender, EventArgs e)
@@ -122,90 +124,8 @@ namespace Dom4Mapper
 
     #endregion
 
-    #region BGW
-
-    private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-    {
-      BackgroundWorker bgw = sender as BackgroundWorker;
-      Bitmap bmp = e.Argument as Bitmap;
-      List<Rectangle> provs = new List<Rectangle>();
-      // parse image for regions
-      for (int y = bmp.Height - 1; y >= 0; y--)
-      {
-        for (int x = 0; x < bmp.Width; x++)
-        {
-          if (bgw.CancellationPending)
-          {
-            e.Cancel = true;
-            return;
-          }
-
-          var col = bmp.GetPixel(x, y);
-          if (col.R == 255 && col.G == 255 && col.B == 255)
-          {
-            // This is a Province
-            // Filter to check to see if we already have a province right next to this
-            bool dupe = false;
-            for (int i = 0; i < provs.Count; i++)
-            {
-              var prov = provs[i];
-              if (RectIncludeNeighboringPoint(ref prov, new Point(x, y)))
-              {
-                // Dupe found
-                dupe = true;
-                provs[i] = prov;
-                continue;
-              }
-            }
-            // new prov found
-            if (!dupe)
-            {
-              provs.Add(new Rectangle(x, y, 1, 1));
-            }
-          }
-        }
-        bgw.ReportProgress(((bmp.Height-y) * 100) / bmp.Height);
-      }
-
-      // return the result
-      List<Point> result = new List<Point>();
-      foreach (var r in provs)
-      {
-        // add the centre point
-        result.Add(new Point(r.X + (r.Width / 2), r.Y + (r.Height / 2)));
-      }
-      e.Result = result;
-    }
-
-    private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-    {
-      this.progressBar.Value = e.ProgressPercentage;
-    }
-
-    private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-      cancelButton.Visible = false;
-      progressBar.Visible = false;
-
-      if (e.Cancelled == false)
-      {
-        provinces = e.Result as List<Point>;
-      }
-
-      updateImage();
-
-      fileSaveButton.Enabled = true;
-    }
-
-    #endregion
-
     private void setImage(string imagePath)
     {
-      if (srcBitmap != null)
-      {
-        srcBitmap.Dispose();
-        srcBitmap = null;
-      }
       if (pictureBox1.Image != null)
       {
         pictureBox1.Image.Dispose();
@@ -218,7 +138,7 @@ namespace Dom4Mapper
       {
         using (var tgaImage = new Paloma.TargaImage(imagePath))
         {
-          layeredImage.BackgroundImage = new Bitmap(tgaImage.Image);
+          layeredImage.BackgroundImage = tgaImage.Image;
         }
 
         updateImage();
@@ -237,7 +157,7 @@ namespace Dom4Mapper
         pictureBox1.Image = null;
       }
       // TODO: Update province numbers layer: generateImage();
-      pictureBox1.Image = layeredImage.GetFinalImage();
+      pictureBox1.Image = new Bitmap(layeredImage.GetFinalImage());
     }
 
 
@@ -278,45 +198,28 @@ namespace Dom4Mapper
       return newImage;
     }
 
-    #region helpers
 
-    bool RectIncludeNeighboringPoint(ref Rectangle r, Point p)
+
+    private void provinceExtractor_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
-      if (r.Contains(p))
-      {
-        // Nothing to do
-        return true;
-      }
-
-      bool success = false;
-      // See if the point is neighbouring & grow if so
-      if (r.Contains(p.X - 1, p.Y))
-      {
-        r.Width++;
-        success = true;
-      }
-      if (r.Contains(p.X + 1, p.Y))
-      {
-        r.X--;
-        r.Width++;
-        success = true;
-      }
-      if (r.Contains(p.X, p.Y - 1))
-      {
-        r.Height++;
-        success = true;
-      }
-      if (r.Contains(p.X, p.Y + 1))
-      {
-        r.Y--;
-        r.Height++;
-        success = true;
-      }
-
-      return success;
+      this.progressBar.Value = e.ProgressPercentage;
     }
 
-    #endregion
+    private void provinceExtractor_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      cancelButton.Visible = false;
+      progressBar.Visible = false;
+
+      if (e.Cancelled == false)
+      {
+        provinces = e.Result as List<Point>;
+      }
+
+      updateImage();
+
+      fileSaveButton.Enabled = true;
+    }
+
 
     private bool dragging = false;
     private Point dragStart;

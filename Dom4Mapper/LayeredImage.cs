@@ -18,7 +18,12 @@ namespace Dom4Mapper
     public Bitmap BackgroundImage
     {
       get { return backgroundImage; }
-      set { backgroundImage = value; finalImageDirty = true; }
+      set {
+        if (backgroundImage != null)
+          backgroundImage.Dispose();
+        backgroundImage = new Bitmap(value);
+        finalImageDirty = true;
+      }
     }
 
     public LayeredImage()

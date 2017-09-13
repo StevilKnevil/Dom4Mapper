@@ -29,7 +29,6 @@
     private void InitializeComponent()
     {
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-      this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
       this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
       this.toolStrip1 = new System.Windows.Forms.ToolStrip();
       this.fileOpenButton = new System.Windows.Forms.ToolStripButton();
@@ -57,14 +56,6 @@
       this.statusStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
-      // 
-      // backgroundWorker1
-      // 
-      this.backgroundWorker1.WorkerReportsProgress = true;
-      this.backgroundWorker1.WorkerSupportsCancellation = true;
-      this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-      this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
-      this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
       // 
       // openFileDialog1
       // 
@@ -262,7 +253,6 @@
     #endregion
 
     private PanningPictureBox pictureBox1;
-    private System.ComponentModel.BackgroundWorker backgroundWorker1;
     private System.Windows.Forms.OpenFileDialog openFileDialog1;
     private System.Windows.Forms.ToolStrip toolStrip1;
     private System.Windows.Forms.ToolStripButton fileOpenButton;
