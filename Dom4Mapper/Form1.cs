@@ -269,6 +269,8 @@ namespace Dom4Mapper
     private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
     {
       layeredImage.Layers[e.Index].Visible = (e.NewValue == CheckState.Checked);
+      // TODO this should not be here. Instead have an event triggered by the LayeredImage, or just have a reference to the final image? though we'd have to not throw that all away each time.
+      updateImage();
     }
   }
 }

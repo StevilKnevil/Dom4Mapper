@@ -27,7 +27,7 @@ namespace Dom4Mapper
         get { return visible; }
         set
         {
-          visible = true;
+          visible = value;
           if (LayerChanged != null)
             LayerChanged(this, new EventArgs());
         }
